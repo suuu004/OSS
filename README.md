@@ -3,10 +3,9 @@
 
 ✅ 1. Node.js 설치 확인
 bash
-복사
-편집
-node -v
-npm -v
+- node -v
+- npm -v
+
 만약 설치되어 있지 않다면 → Node.js 공식 사이트에서 설치
 
 ✅ 2. 프로젝트 구조 만들기
