@@ -31,7 +31,7 @@ utils/fetchUtil.js: 공통 유틸
 ✅ 5. index.js에 테스트 URL 추가
 [js]
 - const testURL = 'https://example.com'; 
-- 
+  
 ✅ 6. 실행
 [bash]
 - node index.js
