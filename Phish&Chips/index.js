@@ -1,7 +1,14 @@
-const analyzeWebsite = require('./utils/analyzeWebsite');
+const { checkURLRules } = require('./rules/urlRules');
+const { checkHeaderRules } = require('./rules/headerRules');
+const { checkSSLRules } = require('./rules/sslRules');
 
-const targetUrl = 'https://example.com';
+async function analyzeURL(targetUrl) {
+  console.log(`🔍 URL 분석 시작: ${targetUrl}`);
 
-analyzeWebsite(targetUrl).then((result) => {
-  console.log('\n🔍 분석 결과:\n', result);
-});
+  await checkURLRules(targetUrl);
+  await checkHeaderRules(targetUrl);
+  await checkSSLRules(targetUrl);
+}
+
+const testURL = 'http://example.com'; // 검사할 URL 입력
+analyzeURL(testURL);
