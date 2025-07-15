@@ -15,7 +15,8 @@ bash
 - mkdir security-checker
 - cd security-checker
 - npm init -y
-- 
+
+
 ✅ 3. 필요한 패키지 설치
 [bash]
 - npm install axios ssl-certificate
@@ -23,9 +24,13 @@ bash
 ✅ 4. 파일
 
 index.js: 실행 메인
+
 rules/urlRules.js: URL 룰
+
 rules/headerRules.js: 헤더 룰
+
 rules/sslRules.js: SSL 룰
+
 utils/fetchUtil.js: 공통 유틸
 
 ✅ 5. index.js에 테스트 URL 추가
