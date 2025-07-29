@@ -1,11 +1,5 @@
 # OSS
 
-분류	파일명	분석 대상	목적	예시
-구성 보안 점검	urlRules.js	URL 구조	민감 정보 노출 여부	/admin, ?q=<script>
-sslRules.js	SSL 인증서	유효성, 신뢰도	만료일, 발급기관
-headerRules.js	HTTP 헤더	보안 헤더 설정 여부	CSP, HSTS, X-Frame-Options 등
-취약점 점검	vulnRules.js (신규)	실제 페이지 동작	공격이 가능한 구조인지 탐지	XSS 삽입 응답, iframe 허용, 디렉토리 노출 등
-
 
 ✅ 1. Node.js 설치 확인
 bash
