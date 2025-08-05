@@ -9,7 +9,11 @@ bash
 - node -v
 - npm -v
 
-만약 설치되어 있지 않다면 → Node.js 공식 사이트에서 설치
+
++ axios 설치
+
+bash
+- npm install axios
 
 ✅ 2. 프로젝트 구조 만들기
 터미널이나 VS Code에서 원하는 폴더로 이동 후:
