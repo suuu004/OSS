@@ -3,7 +3,7 @@ const { fetchHeaders } = require('../utils/fetchUtil');
 const ruleWeights = require('../config/ruleWeights'); // 점수 가중치 가져오기
 
 async function checkHeaderRules(url) {
-    console.log('[HTTP 헤더 기반 룰]\n');
+    console.log('[HTTP 헤더 분석]');
 
     let totalScore = 0; // 누적 감점 점수
     const issues = []; // 발견된 이슈 목록
@@ -55,7 +55,7 @@ async function checkHeaderRules(url) {
         else if (totalScore >= 20) grade = '주의';
         else grade = '양호';
 
-        console.log(`➡️ HTTP 헤더 위험 점수: ${totalScore}점 (${grade})`);
+        console.log(`➡️ HTTP 헤더 위험 점수: ${totalScore}점 (${grade})\n`);
 
         return {
             score: totalScore,

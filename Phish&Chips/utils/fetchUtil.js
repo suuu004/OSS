@@ -2,7 +2,7 @@
 // 공통 HTTP 요청, SSL 인증서 정보 가져오기 등의 유틸리티 함수 정의
 
 const axios = require('axios');
-const sslCertificate = require('ssl-certificate');
+const sslChecker = require('ssl-checker');  // 새로 추가
 const { URL } = require('url');
 
 /**

@@ -5,6 +5,7 @@ const { URL } = require("url");
 const ruleWeights = require("../config/ruleWeights");
 
 async function checkVulnerabilityRules(targetUrl) {
+  console.log('[웹 취약점 분석]');
   let score = 0;
   const results = {
     XSS: false,
@@ -81,12 +82,12 @@ async function checkVulnerabilityRules(targetUrl) {
     if (score >= 6) grade = "위험";
     else if (score >= 3) grade = "주의";
 
-    console.log(`\n🔍 [${targetUrl}] 취약점 진단 결과`);
+    //console.log(`\n🔍 [${targetUrl}] 취약점 진단 결과`);
     console.log(`✔️ XSS 의심: ${results.XSS}`);
     console.log(`✔️ Clickjacking 가능성: ${results.Clickjacking}`);
     console.log(`✔️ 파일 업로드 경로 노출: ${results.FileUploadExposure}`);
     console.log(`✔️ 디렉토리 리스팅 노출: ${results.DirectoryListing}`);
-    console.log(`➡️ vuln 위험 점수: ${score}/10 (${grade})`);
+    console.log(`➡️ vuln 위험 점수: ${score}/10 (${grade})\n`);
 
     return {
       score,

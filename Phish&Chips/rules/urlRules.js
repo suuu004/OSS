@@ -5,7 +5,7 @@ const ruleWeights = require('../config/ruleWeights'); // 점수 가중치 가져
 function checkURLRules(rawUrl) {
     const url = new URL(rawUrl);
 
-    console.log('[🔎 URL 기반 룰 검사]');
+    console.log('[URL 기반 룰 검사]');
     let score = 0;
     const messages = [];
 

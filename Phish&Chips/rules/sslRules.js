@@ -1,61 +1,61 @@
-// SSL 인증서 관련 룰
-const { getSSLCertificate } = require('../utils/fetchUtil');
-const ruleWeights = require('../config/ruleWeights'); // 점수 가중치 가져오기
+const sslChecker = require('ssl-checker');
+const { URL } = require('url');
+const ruleWeights = require('../config/ruleWeights');
 
-async function checkSSLRules(url){
-    console.log('[SSL 인증서 룰 검사]');
+async function checkSSLRules(rawUrl) {
+  console.log('[SSL 인증서 검사]');
+  
+  let score = 0;
+  const messages = [];
 
-    const hostname = new URL(url).hostname;
-    let score = 0;
-    let details = [];
+  try {
+    const hostname = new URL(rawUrl).hostname;
+    const cert = await sslChecker(hostname);
 
-    try {
-        const cert = await getSSLCertificate(hostname);
+    // cert 구조 예시
+    // {
+    //   valid: true,
+    //   validFrom: 'Aug 1 00:00:00 2023 GMT',
+    //   validTo: 'Nov 1 23:59:59 2025 GMT',
+    //   daysRemaining: 456,
+    //   issuer: 'Let's Encrypt',
+    //   subject: 'example.com'
+    // }
 
-        if (!cert) throw new Error('인증서 없음');
-
-        // 유효기간 검사
-        const now = new Date();
-        const expiry = new Date(cert.valid_to);
-        const daysLeft = Math.ceil((expiry - now)/ (1000*60*60*24));
-
-        if (daysLeft < 0) {
-            console.warn(`❌ 인증서 만료됨 (${cert.valid_to})`);
-            score += ruleWeights.sslExpired;
-            details.push({ issue: '인증서 만료', severity: 3 });
-        } else if (daysLeft < 30) {
-            console.warn(`⚠️ 인증서 만료까지 ${daysLeft}일 남음`);
-            score += ruleWeights.sslExpirySoon;
-            details.push({ issue: `만료 임박 (${daysLeft}일 남음)`, severity: 1 });
-        }
-
-        // 발급자 확인
-        const issuerName = cert.issuer?.O || '알 수 없음';
-        const trustedIssuers = ["Let's Encrypt", "DigiCert", "Google Trust Services", "Amazon"];
-
-        const isTrusted = trustedIssuers.some((issuer) =>
-            issuerName.toLowerCase().includes(issuer.toLowerCase())
-        );
-
-        if (!isTrusted) {
-            console.warn(`⚠️ 비신뢰 발급자: ${issuerName}`);
-            score += ruleWeights.sslUntrustedCA;
-            details.push({ issue: `비신뢰 발급자 (${issuerName})`, severity: 2 });
-        }
-
-    } catch(err){
-        console.error('❌ SSL 인증서 분석 실패:', err.message);
-        score += ruleWeights.sslAnalysisFail;
-        details.push({ issue: 'SSL 인증서 분석 실패', severity: 3 });
+    if (!cert.valid) {
+      messages.push(`❌ 인증서가 유효하지 않음 (만료일: ${cert.validTo})`);
+      score += ruleWeights.SSL_EXPIRED || 30;
+    } else if (cert.daysRemaining < 30) {
+      messages.push(`⚠️ 인증서 만료 임박 (${cert.daysRemaining}일 남음)`);
+      score += ruleWeights.SSL_EXPIRING_SOON || 10;
     }
 
-    let grade = '';
-    if(score >= 50) grade = '위험';
-    else if(score >= 20) grade = '주의';
-    else grade = '양호';
+    // 신뢰할 수 있는 발급자인지 확인
+    const trustedIssuers = ["Let's Encrypt", "DigiCert", "Google Trust Services", "Amazon"];
+    const isTrusted = trustedIssuers.some(issuer =>
+      cert.issuer.toLowerCase().includes(issuer.toLowerCase())
+    );
 
-    console.log(`➡️ SSL 위험 점수: ${score}점 (${grade})`);
-    return { score, grade, details };
+    if (!isTrusted) {
+      messages.push(`⚠️ 비신뢰 발급자: ${cert.issuer}`);
+      score += ruleWeights.SSL_UNTRUSTED_ISSUER || 15;
+    }
+
+  } catch (error) {
+    messages.push(`❌ SSL 인증서 검사 실패: ${error.message}\n`);
+    score += ruleWeights.SSL_CHECK_FAIL || 50;
+  }
+
+  // 등급 판단
+  let grade = '';
+  if (score >= 50) grade = '위험';
+  else if (score >= 20) grade = '주의';
+  else grade = '양호';
+
+  console.log(`➡️ SSL 점수: ${score}점 (${grade})\n`);
+  messages.forEach(msg => console.log(msg));
+
+  return { score, grade, messages };
 }
 
 module.exports = { checkSSLRules };

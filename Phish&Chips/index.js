@@ -5,7 +5,7 @@ const { checkVulnerabilityRules } = require('./rules/vulnRules');
 const { getGradeFromScore } = require('./utils/gradeUtil');
 
 async function analyzeURL(targetUrl) {
-  console.log(`\n🔍 [URL 분석 시작] ${targetUrl}\n`);
+  console.log(`\n[사이트 분석 시작] ${targetUrl}\n`);
 
   const results = {
     details: {}
@@ -51,10 +51,14 @@ async function analyzeURL(targetUrl) {
   results.totalScore = totalScore;
   results.overallGrade = getGradeFromScore(totalScore);
 
-  // 6. 콘솔 출력
-  console.log('📝 [분석 결과 리포트]');
-  console.log(JSON.stringify(results, null, 2));
+  // 추가) 콘솔 출력
+  //console.log('📝 [분석 결과 리포트]');
+  //console.log(JSON.stringify(results, null, 2));
 }
 
-const testURL = 'http://example.com'; // 검사할 대상
+const testURL = process.argv[2];
+if (!testURL) {
+  console.error('❗ URL 인자를 넣어주세요: node index.js https://example.com');
+  process.exit(1);
+}
 analyzeURL(testURL);
