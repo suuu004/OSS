@@ -5,11 +5,22 @@
 
 
 ✅ 1. Node.js 설치 확인
-bash
 - node -v
 - npm -v
 
-만약 설치되어 있지 않다면 → Node.js 공식 사이트에서 설치
+
++ axios 설치
+- npm install axios
+
+
++ SSL 인증서 조회를 위한 패키지
+ssl-checker
+
+-> SSL 만료일, 발급자 등 정보 확인 가능
+
+설치:
+- npm install ssl-checker
+
 
 ✅ 2. 프로젝트 구조 만들기
 터미널이나 VS Code에서 원하는 폴더로 이동 후:
