@@ -1,5 +1,6 @@
 // URL 관련 룰
 const { URL } = require('url');
+const ruleWeights = require('../config/ruleWeights'); // 점수 가중치 가져오기
 
 function checkURLRules(rawUrl) {
     const url = new URL(rawUrl);
@@ -31,7 +32,7 @@ function checkURLRules(rawUrl) {
 
     // 최종 결과 출력
     console.log(messages.join('\n') || '✅ 이상 없음');
-    console.log(`👉 URL 위험 점수: ${score}\n`);
+    console.log(`➡️ URL 위험 점수: ${score}\n`);
 
     return {
         score,
