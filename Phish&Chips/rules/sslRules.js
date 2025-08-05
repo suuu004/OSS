@@ -52,7 +52,7 @@ async function checkSSLRules(rawUrl) {
   else if (score >= 20) grade = '주의';
   else grade = '양호';
 
-  console.log(`➡️ SSL 점수: ${score}점 (${grade})\n`);
+  console.log(`➡️ SSL 위험 점수: ${score}점 (${grade})\n`);
   messages.forEach(msg => console.log(msg));
 
   return { score, grade, messages };
