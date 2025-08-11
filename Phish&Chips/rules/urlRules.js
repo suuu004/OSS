@@ -11,7 +11,7 @@ function checkURLRules(rawUrl) {
 
     // 1. HTTPS 사용 여부
     if (url.protocol !== 'https:') {
-        messages.push(`⚠️ HTTPS 사용하지 않음 (-${ruleWeights.urlHttpUsage}점)`);
+        messages.push(`⚠️ HTTPS 사용하지 않음 (${ruleWeights.urlHttpUsage}점)`);
         score -= ruleWeights.urlHttpUsage;
     }
 
@@ -19,14 +19,14 @@ function checkURLRules(rawUrl) {
     const sensitivePaths = ['admin', 'login', 'phpmyadmin', '.git', 'config'];
     sensitivePaths.forEach((keyword) => {
         if (url.pathname.toLowerCase().includes(keyword)) {
-            messages.push(`⚠️ 민감 경로 포함됨: ${keyword} (-${ruleWeights.urlSensitivePath}점)`);
+            messages.push(`⚠️ 민감 경로 포함됨: ${keyword} (${ruleWeights.urlSensitivePath}점)`);
             score -= ruleWeights.urlSensitivePath;
         }
     });
 
     // 3. 쿼리 파라미터에 위험한 패턴 사용 여부
     if (url.search.includes('=') && /('|--|<|>)/.test(url.search)) {
-        messages.push(`⚠️ URL 파라미터에 잠재적 인젝션 패턴 감지됨 (-${ruleWeights.urlInjectionPattern}점)`);
+        messages.push(`⚠️ URL 파라미터에 잠재적 인젝션 패턴 감지됨 (${ruleWeights.urlInjectionPattern}점)`);
         score -= ruleWeights.urlInjectionPattern;
     }
 
