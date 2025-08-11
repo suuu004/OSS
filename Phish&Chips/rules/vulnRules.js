@@ -1,5 +1,3 @@
-// vulnRules.js - 주요 취약점 탐지 룰 모듈 (점수 체계 통일 버전)
-
 const axios = require("axios");
 const { URL } = require("url");
 const ruleWeights = require("../config/ruleWeights");
@@ -26,7 +24,7 @@ async function checkVulnerabilityRules(targetUrl) {
     const headers = res.headers;
     const body = res.data;
 
-    // [1] XSS 탐지
+    // XSS 탐지
     const xssIndicators = ["<script", "onerror=", "javascript:"];
     if (xssIndicators.some(tag => body.toLowerCase().includes(tag))) {
       results.XSS = true;
@@ -34,14 +32,14 @@ async function checkVulnerabilityRules(targetUrl) {
       details.push({ issue: "XSS 의심 콘텐츠 포함", severity: 2 });
     }
 
-    // [2] Clickjacking 탐지
+    // Clickjacking 탐지
     if (!headers["x-frame-options"]) {
       results.Clickjacking = true;
       score += ruleWeights.vulnClickjacking;
       details.push({ issue: "Clickjacking 보호 미설정 (X-Frame-Options 없음)", severity: 2 });
     }
 
-    // [3] 파일 업로드 노출 경로 탐지
+    // 파일 업로드 노출 경로 탐지
     const uploadPaths = ["/upload", "/uploads", "/file", "/files", "/images"];
     for (let path of uploadPaths) {
       const uploadUrl = new URL(path, targetUrl).href;
