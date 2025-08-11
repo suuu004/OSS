@@ -87,7 +87,7 @@ async function checkVulnerabilityRules(targetUrl) {
     console.log(`✔️ Clickjacking 가능성: ${results.Clickjacking}`);
     console.log(`✔️ 파일 업로드 경로 노출: ${results.FileUploadExposure}`);
     console.log(`✔️ 디렉토리 리스팅 노출: ${results.DirectoryListing}`);
-    console.log(`➡️ vuln 위험 점수: ${score}/10 (${grade})\n`);
+    console.log(`➡️ vuln 위험 점수: ${score} (${grade})\n`);
 
     return {
       score,

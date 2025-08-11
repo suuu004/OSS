@@ -30,9 +30,14 @@ function checkURLRules(rawUrl) {
         score -= ruleWeights.urlInjectionPattern;
     }
 
+    let grade = "";
+    if (score >= 50) grade = "위험";
+    else if (score >= 20) grade = "주의";
+    else grade = "양호";
+
     // 최종 결과 출력
     console.log(messages.join('\n') || '✅ 이상 없음');
-    console.log(`➡️ URL 위험 점수: ${score}\n`);
+    console.log(`➡️ URL 위험 점수: ${score}점 (${grade})\n`);
 
     return {
         score,
