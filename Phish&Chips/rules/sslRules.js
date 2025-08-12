@@ -17,7 +17,7 @@ async function getSSLAnalysis(hostname) {
       analysis = data;
       break;
     }
-    console.log(`⏳ SSL 분석 대기 중... (${i + 1}회차)`);
+    console.log(`⏳ SSL 분석 대기 중... (${i + 1}/15)`);
   }
   return analysis;
 }
